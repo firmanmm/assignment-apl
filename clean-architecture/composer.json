@@ -1,0 +1,9 @@
+{
+    "require": {
+        "vlucas/phpdotenv": "^3.3",
+        "guzzlehttp/guzzle": "^6.3"
+    },
+    "require-dev": {
+        "phalcon/ide-stubs": "^3.4"
+    }
+}
