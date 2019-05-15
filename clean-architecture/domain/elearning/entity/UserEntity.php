@@ -2,16 +2,10 @@
 
 namespace Domain\Elearning\Entity;
 
-use Exception;
-use JsonSerializable;
+use \Exception;
 
-class UserEntity implements JsonSerializable {
-    /**
-     * Id
-     *
-     * @var int
-     */
-    private $id;
+class UserEntity extends AbstractEntity{
+
     /**
      * Name
      *
@@ -25,10 +19,15 @@ class UserEntity implements JsonSerializable {
      */
     private $studentId;
 
+    private $courses;
+
+    private $password;
+
     public function __construct(int $id = 0) {
-        $this->id = $id;
+        parent::__construct($id);
         $this->studentId = "05111640000XXX";
         $this->name = "Students";
+        $this->courses = [];
     }
 
     public function setName(String $name) : void {
@@ -48,10 +47,6 @@ class UserEntity implements JsonSerializable {
         $this->studentId = $studentId;
     }
 
-    public function getId() : int {
-        return $this->id;
-    }
-
     public function getName() : String {
         return $this->name;
     }
@@ -60,9 +55,35 @@ class UserEntity implements JsonSerializable {
         return $this->studentId;
     }
 
+    public function addCourse(int $courseId) {
+        $this->courses[$courseId] = $courseId;
+    }
+
+    public function removeCourse(int $courseId) {
+        $this->courses[$courseId] = $courseId;
+    }
+
+    /**
+     * Get the value of password
+     */ 
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    /**
+     * Set the value of password
+     *
+     * @return  void
+     */ 
+    public function setPassword($password)
+    {
+        $this->password = $password;
+    }
+
     public function jsonSerialize()
     {
-        $json = array();
+        $json = parent::jsonSerialize();
         foreach($this as $key => $value) {
             $json[$key] = $value;
         }

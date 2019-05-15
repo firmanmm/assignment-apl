@@ -13,6 +13,9 @@ use Domain\Elearning\Service\UserService;
 use Domain\Elearning\Service\CourseService;
 use App\Elearning\Repository\UserRepository;
 use App\Elearning\Repository\CourseRepository;
+use App\Elearning\Repository\MaterialRepository;
+use Domain\Elearning\Service\MaterialService;
+use App\Elearning\Repository\UserCourseRepository;
 
 $di['config'] = function() use ($config) {
 	return $config;
@@ -46,14 +49,33 @@ $di['url'] = function() use ($config, $di) {
 	return $url;
 };
 
-$di['userService'] = function() use ($config, $di) {
-    $repository = new UserRepository($di);
-    return new UserService($repository);
+$di['userRepository'] = function() use ($di) {
+    return new UserRepository($di);
 };
 
-$di['courseService'] = function() use ($config, $di) {
-    $repository = new CourseRepository($di);
-    return new CourseService($repository);
+$di['courseRepository'] = function() use ($di) {
+    return new CourseRepository($di);
+};
+
+$di['materialRepository'] = function() use ($di) {
+    return new MaterialRepository($di);
+};
+
+$di['userCourseRepository'] = function() use ($di) {
+    return new UserCourseRepository($di);
+};
+
+
+$di['userService'] = function() use ($di) {
+    return new UserService($di['userRepository']);
+};
+
+$di['materialService'] = function() use ($di) {
+    return new MaterialService($di['materialRepository']);
+};
+
+$di['courseService'] = function() use ($di) {
+    return new CourseService($di['courseRepository'], $di['userCourseRepository'], $di['userService']);
 };
 
 $di['voltService'] = function($view, $di) use ($config) {

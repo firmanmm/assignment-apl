@@ -27,7 +27,6 @@ class CourseController extends Controller {
     public function postAction() {
         $name = $this->request->getPost('name');
         $courseId = $this->request->getPost('courseId');
-        $students = $this->request->getPost('students');
         $description = $this->request->getPost('description');
         $capacity = $this->request->getPost('capacity');
         try{
@@ -36,12 +35,6 @@ class CourseController extends Controller {
             $course->setCourseId($courseId);
             $course->setDescription($description);
             $course->setCapacity($capacity);
-            $studentList = explode(' ', $students);
-            foreach($studentList as $student){
-                if(strlen($student) != 0) {
-                    $course->enroll($student);
-                }
-            }
             $courseService = $this->courseService;
             $courseService->saveCourse($course);
             $this->response->setJsonContent($course);

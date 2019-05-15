@@ -9,10 +9,10 @@ $di['router'] = function() use ($defaultModule, $modules, $di, $config) {
 	 * Default Routing
 	 */
 	$router->add('/', [
-	    'namespace' => $modules[$defaultModule]['webControllerNamespace'],
-		'module' => $defaultModule,
+	    'namespace' => 'App\Elearning\Controllers\Web',
+		'module' => 'elearning',
 	    'controller' => 'Dashboard',
-	    'action' => 'hello'
+	    'action' => 'welcome'
 	]);
 	
 	/**
@@ -26,7 +26,65 @@ $di['router'] = function() use ($defaultModule, $modules, $di, $config) {
 		]
 	);
 
-	$router->addGet("/users", [
+	$router->addGet("/student", [
+		'namespace' => 'App\Elearning\Controllers\Web',
+		'module' => 'elearning',
+		'controller' => 'user',
+		'action' => 'home'
+	]);
+
+	$router->addPost("/student", [
+		'namespace' => 'App\Elearning\Controllers\Web',
+		'module' => 'elearning',
+		'controller' => 'user',
+		'action' => 'post'
+	]);
+
+	$router->addGet("/material", [
+		'namespace' => 'App\Elearning\Controllers\Web',
+		'module' => 'elearning',
+		'controller' => 'material',
+		'action' => 'home'
+	]);
+
+	$router->addPost("/material", [
+		'namespace' => 'App\Elearning\Controllers\Web',
+		'module' => 'elearning',
+		'controller' => 'material',
+		'action' => 'post'
+	]);
+
+	$router->addGet("/course", [
+		'namespace' => 'App\Elearning\Controllers\Web',
+		'module' => 'elearning',
+		'controller' => 'course',
+		'action' => 'home'
+	]);
+
+	$router->addPost("/course", [
+		'namespace' => 'App\Elearning\Controllers\Web',
+		'module' => 'elearning',
+		'controller' => 'course',
+		'action' => 'post'
+	]);
+
+	$router->addGet("/course/([0-9]+)", [
+		'namespace' => 'App\Elearning\Controllers\Web',
+		'module' => 'elearning',
+		'controller' => 'course',
+		'action' => 'detail',
+		'id' => 1
+	]);
+
+	$router->addPost("/course/([0-9]+)", [
+		'namespace' => 'App\Elearning\Controllers\Web',
+		'module' => 'elearning',
+		'controller' => 'course',
+		'action' => 'addStudent',
+		'id' => 1
+	]);
+
+	$router->addGet("/api/users", [
 		'namespace' => 'App\Elearning\Controllers\Api',
 		'module' => 'elearning',
 		'controller' => 'user',

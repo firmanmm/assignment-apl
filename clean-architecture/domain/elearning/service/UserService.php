@@ -39,13 +39,13 @@ class UserService {
      * @return UserEntity
      */
     public function getUserByStudentId(String $studentId) {
-        if(count($studentId) != 14) {
+        if(strlen($studentId) != 14) {
             throw new Exception("Invalid student id");
         }
         return $this->repository->getByStudentId($studentId);
     }
 
     public function saveUser(UserEntity $user) {
-        $this->repository->save($user);
+        return $this->repository->save($user);
     }
 }

@@ -5,13 +5,7 @@ namespace Domain\Elearning\Entity;
 use Exception;
 use JsonSerializable;
 
-class CourseEntity implements JsonSerializable{
-    /**
-     * Id
-     *
-     * @var int
-     */
-    private $id;
+class CourseEntity extends AbstractEntity{
     /**
      * Course's id
      *
@@ -33,9 +27,15 @@ class CourseEntity implements JsonSerializable{
     /**
      * Enrolled users
      *
-     * @var String[]
+     * @var int[]
      */
     private $users;
+    /**
+     * Available materials
+     *
+     * @var int[]
+     */
+    private $materials;
     /**
      * Capacity
      *
@@ -44,7 +44,9 @@ class CourseEntity implements JsonSerializable{
     private $capacity;
 
     public function __construct(int $id = 0) {
-        $this->id = $id;
+        parent::__construct($id);
+        $this->setId($id);
+        $this->materials = [];
         $this->users = [];
         $this->capacity = 0;
         $this->description = "";
@@ -70,10 +72,6 @@ class CourseEntity implements JsonSerializable{
     public function setCapacity(int $capacity) : void {
         $this->capacity = $capacity;
     }
-
-    public function getId() : int {
-        return $this->id;
-    }
     
     public function getName() : String {
         return $this->name;
@@ -97,20 +95,24 @@ class CourseEntity implements JsonSerializable{
      * @return array
      */
     public function getAllUser() : array {
-        return $this->users;
+        $ids = [];
+        foreach($this->users as $key => $value){
+            $ids[] = $key;
+        }
+        return $ids;
     }
 
     /**
      * Enroll user to this course
      *
-     * @param User $user
+     * @param integer $user
      * @return boolean Status
      */
-    public function enroll(String $user) : bool {
+    public function enroll(int $userId) : bool {
         if($this->capacity <= count($this->users)){
             return false;
         }
-        $this->users[] = $user;
+        $this->users[$userId] = $userId;
         return true;
     }
 
@@ -134,10 +136,41 @@ class CourseEntity implements JsonSerializable{
         return isset($this->users[$userId]);
     }
 
-    
+    public function addMaterial(int $materialId) {
+        $this->materials[$materialId] = $materialId;
+    }
+
+    public function removeMaterial(int $materialId) {
+        unset($this->materials[$materialId]);
+    }
+
+    /**
+     * Get available materials
+     *
+     * @return  MaterialEntity
+     */ 
+    public function getMaterials()
+    {
+        return $this->materials;
+    }
+
+    /**
+     * Set available materials
+     *
+     * @param  MaterialEntity  $materials  Available materials
+     *
+     * @return  self
+     */ 
+    public function setMaterials(MaterialEntity $materials)
+    {
+        $this->materials = $materials;
+
+        return $this;
+    }
+
     public function jsonSerialize()
     {
-        $json = array();
+        $json = parent::jsonSerialize();
         foreach($this as $key => $value) {
             $json[$key] = $value;
         }
