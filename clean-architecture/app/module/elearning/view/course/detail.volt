@@ -7,6 +7,12 @@
         <form class="col s6 offset-s3 card" action="" method="POST">
             <br><br>
             <div class="row center">
+                <span class="card-title blue-text">{{course.courseId}}'s QRCode</span>
+            </div>
+            <div class="row center">
+                <img src="{{qrCode}}">
+            </div>
+            <div class="row center">
                 <span class="card-title blue-text">Add Student To {{course.courseId}}</span>
             </div>
             <div class="row">

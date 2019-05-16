@@ -7,6 +7,7 @@ use Domain\Elearning\Entity\CourseEntity;
 use Domain\Elearning\Repository\CourseRepositoryInterface;
 use Domain\Elearning\Entity\MaterialEntity;
 use Domain\Elearning\Repository\UserCourseRepositoryInterface;
+use chillerlan\QRCode\QRCode;
 
 class CourseService {
 
@@ -127,5 +128,9 @@ class CourseService {
 
     public function deleteCourse(int $courseId) {
         $this->repository->delete($courseId);
+    }
+
+    public function generateQR($data) {
+        return (new QRCode())->render($data);
     }
 }

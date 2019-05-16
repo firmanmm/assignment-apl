@@ -38,8 +38,6 @@ class CourseController extends Controller {
             $course->setCapacity($capacity);
             $courseService = $this->courseService;
             $courseService->saveCourse($course);
-            $this->response->setJsonContent($course);
-            $this->response->send();
         } catch (Exception $e) {
             $this->response->setStatusCode(500);
             $this->response->setJsonContent(["error" => $e->getMessage()]);
@@ -71,6 +69,7 @@ class CourseController extends Controller {
         $raw = json_encode($materialService->getAllMaterialByCourseId($id));
         $decoded = json_decode($raw);
         $this->view->setVar("materials", $decoded);
+        $this->view->setVar("qrCode", $courseService->generateQR("http://localhost:8081/course/".$id));
         $this->view->pick('course/detail');
     }
 
