@@ -2,8 +2,18 @@
 
 namespace Domain\Elearning\Repository;
 
-use Domain\Elearning\Repository\RepositoryInterface;
+use Domain\Elearning\Entity\UserEntity;
 
-interface UserRepositoryInterface extends RepositoryInterface{
-    function getByStudentId(String $studentId);
+interface UserRepositoryInterface {
+    /**
+     * Return an array of UserRepository
+     *
+     * @return array
+     */
+    function getAll(): array;
+    function getById(int $id): ?UserEntity;
+    function update(UserEntity $data) : UserEntity;
+    function insert(UserEntity $data) : UserEntity;
+    function delete(int $id);
+    function getByStudentId(String $studentId) : ?UserEntity;
 }

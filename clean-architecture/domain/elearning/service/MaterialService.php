@@ -4,6 +4,7 @@ namespace Domain\Elearning\Service;
 
 use Domain\Elearning\Repository\MaterialRepositoryInterface;
 use Domain\Elearning\Entity\MaterialEntity;
+use Domain\Elearning\Entity\CourseEntity;
 
 class MaterialService {
 
@@ -19,21 +20,24 @@ class MaterialService {
         $this->repository = $repository;
     }
 
-
     /**
      * Get all materials
      *
      * @return MaterialEntity[]
      */
-    public function getAllMaterial() {
+    public function getAllMaterial() : array {
         return $this->repository->getAll();
     }
 
-    public function saveMaterial(MaterialEntity $material) {
-        return $this->repository->save($material);
+    public function saveMaterial(MaterialEntity $material) : MaterialEntity {
+        if ($material->getId() == 0) {
+            return $this->repository->insert($material);
+        }else{
+            return $this->repository->update($material);
+        }
     }
 
-    public function getAllMaterialByCourseId($courseId) {
-        return $this->repository->getByCourseId($courseId);
+    public function getAllMaterialByCourse(CourseEntity $course) : array {
+        return $this->repository->getByCourse($course);
     }
 }

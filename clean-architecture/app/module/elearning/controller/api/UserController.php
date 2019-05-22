@@ -33,10 +33,12 @@ class UserController extends Controller {
     public function postAction() {
         $name = $this->request->getPost('name');
         $studentId = $this->request->getPost('studentId');
+        $password = $this->request->getPost('password');
         try{
             $user = new UserEntity(0);
             $user->setName($name);
             $user->setStudentId($studentId);
+            $user->setPassword($password);
             $userService = $this->userService;
             $userService->saveUser($user);
             $this->response->setJsonContent($user);

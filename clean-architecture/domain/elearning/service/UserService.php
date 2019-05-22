@@ -18,7 +18,13 @@ class UserService {
         $this->repository = $repository;
     }
 
-    public function getAllUser() {
+
+    /**
+     * Return all users
+     *
+     * @return UserEntity[]
+     */
+    public function getAllUser() : array {
         return $this->repository->getAll();
     }
 

@@ -19,6 +19,11 @@ class UserEntity extends AbstractEntity{
      */
     private $studentId;
 
+    /**
+     * Courses
+     *
+     * @var CourseEntity
+     */
     private $courses;
 
     private $password;
@@ -47,26 +52,28 @@ class UserEntity extends AbstractEntity{
         $this->studentId = $studentId;
     }
 
-    public function getName() : String {
+    public function getName() : string {
         return $this->name;
     }
 
-    public function getStudentId() : String {
+    public function getStudentId() : string {
         return $this->studentId;
     }
 
-    public function addCourse(int $courseId) {
-        $this->courses[$courseId] = $courseId;
+    public function addCourse(CourseEntity $course) : void {
+        $this->courses[$course->getId()] = $course;
     }
 
-    public function removeCourse(int $courseId) {
-        $this->courses[$courseId] = $courseId;
+    public function removeCourse(CourseEntity $course) : void {
+        unset($this->courses[$course->getId()]);
     }
 
     /**
      * Get the value of password
+     * 
+     * @return string
      */ 
-    public function getPassword()
+    public function getPassword() : string
     {
         return $this->password;
     }
@@ -76,7 +83,7 @@ class UserEntity extends AbstractEntity{
      *
      * @return  void
      */ 
-    public function setPassword($password)
+    public function setPassword($password) : void
     {
         $this->password = $password;
     }

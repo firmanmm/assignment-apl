@@ -91,7 +91,7 @@ $di['router'] = function() use ($defaultModule, $modules, $di, $config) {
 		'action' => 'getAll'
 	]);
 
-	$router->addGet("/users/([0-9]+)", [
+	$router->addGet("/api/users/([0-9]+)", [
 		'namespace' => 'App\Elearning\Controllers\Api',
 		'module' => 'elearning',
 		'controller' => 'user',
@@ -99,21 +99,21 @@ $di['router'] = function() use ($defaultModule, $modules, $di, $config) {
 		'id' => 1
 	]);
 
-	$router->addPost("/users", [
+	$router->addPost("/api/users", [
 		'namespace' => 'App\Elearning\Controllers\Api',
 		'module' => 'elearning',
 		'controller' => 'user',
 		'action' => 'post'
 	]);
 
-	$router->addGet("/courses", [
+	$router->addGet("/api/courses", [
 		'namespace' => 'App\Elearning\Controllers\Api',
 		'module' => 'elearning',
 		'controller' => 'course',
 		'action' => 'getAll'
 	]);
 
-	$router->addGet("/courses/([0-9]+)", [
+	$router->addGet("/api/courses/([0-9]+)", [
 		'namespace' => 'App\Elearning\Controllers\Api',
 		'module' => 'elearning',
 		'controller' => 'course',
@@ -121,7 +121,7 @@ $di['router'] = function() use ($defaultModule, $modules, $di, $config) {
 		'id' => 1
 	]);
 
-	$router->addPost("/courses", [
+	$router->addPost("/api/courses", [
 		'namespace' => 'App\Elearning\Controllers\Api',
 		'module' => 'elearning',
 		'controller' => 'course',

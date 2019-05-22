@@ -27,13 +27,13 @@ class CourseEntity extends AbstractEntity{
     /**
      * Enrolled users
      *
-     * @var int[]
+     * @var UserEntity[]
      */
     private $users;
     /**
-     * Available materials
+     * Available MaterialEntity
      *
-     * @var int[]
+     * @var MaterialEntity[]
      */
     private $materials;
     /**
@@ -61,11 +61,11 @@ class CourseEntity extends AbstractEntity{
         $this->courseId = $courseId;
     }
 
-    public function setName(String $name) : void {
+    public function setName(string $name) : void {
         $this->name = $name;
     }
 
-    public function setDescription(String $description) : void {
+    public function setDescription(string $description) : void {
         $this->description = $description;
     }
 
@@ -73,11 +73,11 @@ class CourseEntity extends AbstractEntity{
         $this->capacity = $capacity;
     }
     
-    public function getName() : String {
+    public function getName() : string {
         return $this->name;
     }
 
-    public function getDescription() : String {
+    public function getDescription() : string {
         return $this->description;
     }
 
@@ -85,87 +85,80 @@ class CourseEntity extends AbstractEntity{
         return $this->capacity;
     }
 
-    public function getCourseId() : String {
+    public function getCourseId() : string {
         return $this->courseId;
     }
 
     /**
      * Return current user list
      *
-     * @return array
+     * @return UserEntity[]
      */
     public function getAllUser() : array {
-        $ids = [];
-        foreach($this->users as $key => $value){
-            $ids[] = $key;
-        }
-        return $ids;
+        return $this->users;
     }
 
     /**
      * Enroll user to this course
      *
-     * @param integer $user
-     * @return boolean Status
+     * @param UserEntity $user
+     * 
      */
-    public function enroll(int $userId) : bool {
+    public function enroll(UserEntity $user) {
         if($this->capacity <= count($this->users)){
-            return false;
+            throw new Exception("Course Out Of Capacity");
         }
-        $this->users[$userId] = $userId;
-        return true;
+        $this->users[$user->getId()] = $user;
     }
 
     /**
      * Expel User from this course
      *
-     * @param int $userId
+     * @param UserEntity $user
      * @return void
      */
-    public function expel(int $userId) : void {
-        unset($this->users[$userId]);
+    public function expel(UserEntity $user) : void {
+        unset($this->users[$user->getId()]);
     }
 
     /**
      * Check user existance
      *
-     * @param integer $userId
+     * @param UserEntity $user
      * @return boolean
      */
-    public function isUserExist(int $userId) : bool {
-        return isset($this->users[$userId]);
+    public function isUserExist(UserEntity $user) : bool {
+        return isset($this->users[$user->getId()]);
     }
 
-    public function addMaterial(int $materialId) {
-        $this->materials[$materialId] = $materialId;
+    public function addMaterial(MaterialEntity $material) : void {
+        $this->materials[$material->getId()] = $material;
     }
 
-    public function removeMaterial(int $materialId) {
-        unset($this->materials[$materialId]);
+    public function removeMaterial(MaterialEntity $material) {
+        unset($this->materials[$material->getId()]);
     }
 
     /**
      * Get available materials
      *
-     * @return  MaterialEntity
+     * @return MaterialEntity[]
      */ 
-    public function getMaterials()
+    public function getMaterials() : array
     {
         return $this->materials;
     }
 
     /**
-     * Set available materials
+     * add available material
      *
-     * @param  MaterialEntity  $materials  Available materials
+     * @param  MaterialEntity  $material
      *
-     * @return  self
+     * @return  void
      */ 
-    public function setMaterials(MaterialEntity $materials)
+    public function addMaterials(MaterialEntity $material) : void
     {
-        $this->materials = $materials;
-
-        return $this;
+        $this->materials[$material->getId()] = $material;
     }
 
     public function jsonSerialize()

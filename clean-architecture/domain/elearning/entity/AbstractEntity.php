@@ -20,7 +20,7 @@ abstract class AbstractEntity implements \JsonSerializable {
      */
     private $deletedAt;
 
-    public function __construct($id)
+    public function __construct($id = 0)
     {
         $this->id = $id;
     }

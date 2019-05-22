@@ -7,14 +7,14 @@ class MaterialEntity extends AbstractEntity {
     /**
      * Material's title
      *
-     * @var String
+     * @var string
      */
     private $title;
     
     /**
      * Material's description
      *
-     * @var String
+     * @var string
      */
     private $description;
 
@@ -33,7 +33,7 @@ class MaterialEntity extends AbstractEntity {
     /**
      * Get material's title
      *
-     * @return  String
+     * @return string
      */ 
     public function getTitle()
     {
@@ -43,7 +43,7 @@ class MaterialEntity extends AbstractEntity {
     /**
      * Set material's title
      *
-     * @param  String  $title  Material's title
+     * @param string  $title  Material's title
      *
      * @return  self
      */ 
@@ -57,7 +57,7 @@ class MaterialEntity extends AbstractEntity {
     /**
      * Get material's description
      *
-     * @return  String
+     * @return string
      */ 
     public function getDescription()
     {
@@ -67,7 +67,7 @@ class MaterialEntity extends AbstractEntity {
     /**
      * Set material's description
      *
-     * @param  String  $description  Material's description
+     * @param string  $description  Material's description
      *
      * @return  self
      */ 
