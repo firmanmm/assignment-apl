@@ -51,11 +51,11 @@
             </thead>
                 {% for course in courses %}
                 <tr>
-                    <td>{{ course.id }}</td>
-                    <td>{{ course.courseId }}</td>
-                    <td>{{ course.capacity }}</td>
-                    <td>{{ course.description }}</td>
-                    <td><a class="waves-effect waves-light btn blue" href="course/{{ course.id }}">Detail</a></td>
+                    <td>{{ course['id'] }}</td>
+                    <td>{{ course['courseId'] }}</td>
+                    <td>{{ course['capacity'] }}</td>
+                    <td>{{ course['description'] }}</td>
+                    <td><a class="waves-effect waves-light btn blue" href="course/{{ course['id'] }}">Detail</a></td>
                 </tr>
                 {% endfor %}
             <tbody>

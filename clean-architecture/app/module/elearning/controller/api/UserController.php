@@ -5,48 +5,37 @@ namespace App\Elearning\Controllers\Api;
 use Phalcon\Mvc\Controller;
 use Domain\Elearning\Entity\UserEntity;
 use Exception;
+use App\Elearning\Controllers\Api\Presenter\UserListPresenterImpl;
+use Domain\Elearning\Interactor\ListUser;
+use App\Elearning\Controllers\Api\Presenter\UserPresenterImpl;
+use Domain\Elearning\Interactor\ViewUser;
+use Domain\Elearning\Interactor\AddUser;
 
 class UserController extends Controller {
 
     public function getAllAction() {
-        $userService = $this->userService;
-        $this->response->setJsonContent($userService->getAllUser());
-        $this->response->send();
+        $presenter = new UserListPresenterImpl();
+        $interactor = new ListUser($this->userService,$presenter);
+        $interactor->listUser();
     }
 
     public function getByIdAction($id) {
-        $userService = $this->userService;
-        try {
-            $user = $userService->getUserById($id);
-        } catch(Exception $e){
-            $this->response->setStatusCode(500);
-            $this->response->setJsonContent(["error" => $e->getMessage()]);
-            $this->response->send();
-        }
-        if($user == null){
-            $this->response->setStatusCode(404);
-        }
-        $this->response->setJsonContent($user);
-        $this->response->send();
+        $presenter = new UserPresenterImpl();
+        $interactor = new ViewUser(
+            $this->userService,
+            $this->courseService,
+            $this->enrollmentService,
+            $presenter);
+
+        $interactor->viewUserById($id);
     }
 
     public function postAction() {
+        $presenter = new UserPresenterImpl();
+        $interactor = new AddUser($this->userService,$presenter);
         $name = $this->request->getPost('name');
         $studentId = $this->request->getPost('studentId');
         $password = $this->request->getPost('password');
-        try{
-            $user = new UserEntity(0);
-            $user->setName($name);
-            $user->setStudentId($studentId);
-            $user->setPassword($password);
-            $userService = $this->userService;
-            $userService->saveUser($user);
-            $this->response->setJsonContent($user);
-            $this->response->send();
-        } catch (Exception $e) {
-            $this->response->setStatusCode(500);
-            $this->response->setJsonContent(["error" => $e->getMessage()]);
-            $this->response->send();
-        }
+        $interactor->addUser($name,$studentId,$password);
     }
 }

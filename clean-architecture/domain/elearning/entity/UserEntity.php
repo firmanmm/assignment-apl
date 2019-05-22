@@ -23,7 +23,7 @@ class UserEntity extends AbstractEntity{
     /**
      * Courses
      *
-     * @var CourseEntity
+     * @var CourseEntity[]
      */
     private $courses;
 
@@ -61,6 +61,10 @@ class UserEntity extends AbstractEntity{
         return $this->studentId;
     }
 
+    public function getCourses() : array {
+        return $this->courses; //TODO : If Error check here
+    }
+
     public function addCourse(CourseEntity $course) : void {
         $this->courses[$course->getId()] = $course;
     }
@@ -92,9 +96,8 @@ class UserEntity extends AbstractEntity{
     public function jsonSerialize()
     {
         $json = parent::jsonSerialize();
-        foreach($this as $key => $value) {
-            $json[$key] = $value;
-        }
+        $json["name"] = $this->getName();
+        $json["studentId"] = $this->getStudentId();
         return $json;
     }
 }

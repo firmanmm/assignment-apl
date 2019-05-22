@@ -42,6 +42,6 @@ class MaterialService {
     }
 
     public function getAllMaterialByCourse(CourseEntity $course) : array {
-        return $this->repository->getByCourse($course);
+        return $this->repository->getByCourseId($course->getId());
     }
 }

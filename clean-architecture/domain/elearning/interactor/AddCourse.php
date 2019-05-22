@@ -5,6 +5,7 @@ namespace Domain\Elearning\Interactor;
 use Domain\Elearning\Service\CourseService;
 use Domain\Elearning\Presenter\CoursePresenter;
 use Domain\Elearning\Entity\CourseEntity;
+use Domain\Elearning\Service\QRService;
 
 class AddCourse {
 
@@ -30,5 +31,6 @@ class AddCourse {
         $course->setCapacity($capacity);
         $course = $this->courseService->saveCourse($course);
         $this->presenter->present($course);
+        
     }
 }

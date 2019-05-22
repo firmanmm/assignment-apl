@@ -14,7 +14,7 @@ return new Config(
         ],   
         
         'url' => [
-            'baseUrl' => 'http://dev.local/',
+            'baseUrl' => 'http://localhost:8081/',
         ],
         
         'application' => [

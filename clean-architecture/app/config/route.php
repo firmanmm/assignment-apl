@@ -26,6 +26,36 @@ $di['router'] = function() use ($defaultModule, $modules, $di, $config) {
 		]
 	);
 
+	$router->addGet("/course/([0-9]+)/migrate", [
+		'namespace' => 'App\Elearning\Controllers\Web',
+		'module' => 'elearning',
+		'controller' => 'migrate',
+		'action' => 'home',
+		'id' => 1
+	]);
+
+	$router->addPost("/course/([0-9]+)/migrate", [
+		'namespace' => 'App\Elearning\Controllers\Web',
+		'module' => 'elearning',
+		'controller' => 'migrate',
+		'action' => 'post',
+		'id' => 1
+	]);
+
+	$router->addGet("/enrollment", [
+		'namespace' => 'App\Elearning\Controllers\Web',
+		'module' => 'elearning',
+		'controller' => 'enrollment',
+		'action' => 'home'
+	]);
+
+	$router->addPost("/enrollment", [
+		'namespace' => 'App\Elearning\Controllers\Web',
+		'module' => 'elearning',
+		'controller' => 'enrollment',
+		'action' => 'post'
+	]);
+
 	$router->addGet("/student", [
 		'namespace' => 'App\Elearning\Controllers\Web',
 		'module' => 'elearning',

@@ -2,8 +2,6 @@
 
 namespace Domain\Elearning\Repository;
 
-use Domain\Elearning\Entity\CourseEntity;
-use Domain\Elearning\Entity\UserEntity;
 use Domain\Elearning\Entity\EnrollmentEntity;
 
 interface EnrollmentRepositoryInterface {
@@ -15,7 +13,7 @@ interface EnrollmentRepositoryInterface {
     function getAll(): array;
     function getById(int $id): ?EnrollmentEntity;
     function insert(EnrollmentEntity $data) : EnrollmentEntity;
-    function delete(int $id);
+    function delete(int $id) : void;
     /**
      * Return array of enrollments
      *

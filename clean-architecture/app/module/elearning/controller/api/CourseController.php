@@ -5,40 +5,42 @@ namespace App\Elearning\Controllers\Api;
 use Phalcon\Mvc\Controller;
 use Exception;
 use Domain\Elearning\Entity\CourseEntity;
+use App\Elearning\Controllers\Api\Presenter\CourseListPresenterImpl;
+use Domain\Elearning\Interactor\ListCourse;
+use App\Elearning\Controllers\Api\Presenter\CoursePresenterImpl;
+use Domain\Elearning\Interactor\ViewCourse;
+use Domain\Elearning\Interactor\AddCourse;
 
 class CourseController extends Controller {
 
     public function getAllAction() {
-        $courseService = $this->courseService;
-        $this->response->setJsonContent($courseService->getAllCourse());
-        $this->response->send();
+        $presenter = new CourseListPresenterImpl();
+        $interactor = new ListCourse($this->courseService, $presenter);
+        $interactor->listCourse();
     }
 
     public function getByIdAction($id) {
-        $courseService = $this->courseService;
-        $course = $courseService->getCourseById($id);
-        if($course == null) {
-            $this->response->setStatusCode(404);
-        }
-        $this->response->setJsonContent($course);
-        $this->response->send();
+        $presenter = new CoursePresenterImpl();
+        $interactor = new ViewCourse(
+            $this->courseService, 
+            $this->userService, 
+            $this->enrollmentService,
+            $this->materialService, 
+            $this->qRService, 
+            $presenter);
+
+        $interactor->viewCourseById($id);
     }
 
     public function postAction() {
+        $presenter = new CoursePresenterImpl();
+        $interactor = new AddCourse($this->courseService, $presenter);
         $name = $this->request->getPost('name');
         $courseId = $this->request->getPost('courseId');
         $description = $this->request->getPost('description');
         $capacity = $this->request->getPost('capacity');
         try{
-            $course = new CourseEntity(0);
-            $course->setName($name);
-            $course->setCourseId($courseId);
-            $course->setDescription($description);
-            $course->setCapacity($capacity);
-            $courseService = $this->courseService;
-            $courseService->saveCourse($course);
-            $this->response->setJsonContent($course);
-            $this->response->send();
+            $interactor->addCourse($courseId,$name,$description,$capacity);
         } catch (Exception $e) {
             $this->response->setStatusCode(500);
             $this->response->setJsonContent(["error" => $e->getMessage()]);

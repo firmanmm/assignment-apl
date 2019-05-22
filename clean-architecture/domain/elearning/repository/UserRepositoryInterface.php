@@ -14,6 +14,6 @@ interface UserRepositoryInterface {
     function getById(int $id): ?UserEntity;
     function update(UserEntity $data) : UserEntity;
     function insert(UserEntity $data) : UserEntity;
-    function delete(int $id);
+    function delete(int $id) : void;
     function getByStudentId(String $studentId) : ?UserEntity;
 }

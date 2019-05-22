@@ -82,9 +82,9 @@ abstract class AbstractEntity implements \JsonSerializable {
      *
      * @return  void
      */ 
-    public function setDeletedAt($deletedAt) : void
+    public function setDeletedAt(DateTime $deletedAt) : void
     {
-        $this->deletedAt = new DateTime($deletedAt);
+        $this->deletedAt = $deletedAt;
     }
 
     public function jsonSerialize()

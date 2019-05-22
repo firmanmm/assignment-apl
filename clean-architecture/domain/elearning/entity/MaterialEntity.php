@@ -98,9 +98,9 @@ class MaterialEntity extends AbstractEntity {
     public function jsonSerialize()
     {
         $json = parent::jsonSerialize();
-        foreach($this as $key => $value) {
-            $json[$key] = $value;
-        }
+        $json["title"] = $this->getTitle();
+        $json["description"] = $this->getDescription();
+        $json["courseId"] = $this->getCourse()->getId();
         return $json;
     }
 }

@@ -8,7 +8,7 @@ use Phalcon\Db\Column;
 
 class CourseRepository extends Repository implements CourseRepositoryInterface {
 
-    public function getAll(){
+    public function getAll() : array {
         $conn = $this->getConnection();
         $stmt = $conn->prepare("SELECT * FROM courses");
         $result = $conn->executePrepared($stmt,[],[]);
@@ -21,17 +21,16 @@ class CourseRepository extends Repository implements CourseRepositoryInterface {
     }
 
     private function makeCourse($raw) : CourseEntity {
-        $tempCourse = new CourseEntity($raw['id']);
-        $tempCourse->setCapacity((int)($raw['capacity']));        
+        $tempCourse = new CourseEntity();
+        $this->populateAbstract($tempCourse, $raw);
+        $tempCourse->setCapacity(($raw['capacity']));        
         $tempCourse->setCourseId($raw['course_id']);
         $tempCourse->setName($raw['name']);
         $tempCourse->setDescription($raw['description']);
-        $tempCourse->setCreatedAt($raw['created_at']);
-        $tempCourse->setDeletedAt($raw['deleted_at']);
         return $tempCourse;
     }
 
-    public function getById(int $id){
+    public function getById(int $id) : ?CourseEntity {
         $conn = $this->getConnection();
         $stmt = $conn->prepare("SELECT * FROM courses WHERE id = :id LIMIT 1");
         $result = $conn->executePrepared($stmt,[
@@ -40,23 +39,10 @@ class CourseRepository extends Repository implements CourseRepositoryInterface {
             'id' => Column::BIND_PARAM_INT
         ]);
         $rawCourses = $result->fetchAll();
-        $rawCourse = (isset($rawCourses[0])) ? $rawCourses[0] : null;
-        if ($rawCourse != null){
-            return $this->makeCourse($rawCourse);
-        } 
-        return null;
+        return (isset($rawCourses[0])) ? $this->makeCourse($rawCourses[0]) : null;
     }
 
-    /**
-     * Insert data
-     *
-     * @param CourseEntity $data
-     * @return void
-     */
-    public function save($data) {
-        return ($data->getId() == 0) ? $this->insert($data) : $this->update($data);
-    }
-    private function update($data) {
+    public function update(CourseEntity $data) : CourseEntity {
         $conn = $this->getConnection();
         $stmt = $conn->prepare("UPDATE courses SET name=:name, description=:description, course_id=:courseId, capacity=:capacity WHERE id=:id LIMIT 1");
         $result = $conn->executePrepared($stmt,[
@@ -75,7 +61,7 @@ class CourseRepository extends Repository implements CourseRepositoryInterface {
         return $data;
     }
 
-    private function insert($data) {
+    public function insert(CourseEntity $data) : CourseEntity {
         $conn = $this->getConnection();
         $stmt = $conn->prepare("INSERT INTO courses(`name`, `description`, `course_id`, `capacity`) VALUES (:name, :description, :courseId, :capacity)");
         $result = $conn->executePrepared($stmt,[
@@ -94,7 +80,7 @@ class CourseRepository extends Repository implements CourseRepositoryInterface {
         return $data;
     }
 
-    public function delete(int $id){
+    public function delete(int $id) : void {
         $conn = $this->getConnection();
         $stmt = $conn->prepare("UPDATE `courses` SET deleted_at = NOW() WHERE id = :id AND deleted_at IS NULL");
         $result = $conn->executePrepared($stmt,[
@@ -102,10 +88,9 @@ class CourseRepository extends Repository implements CourseRepositoryInterface {
         ],[
             'id' => Column::BIND_PARAM_INT
         ]);
-        return $result;
     }
 
-    public function getByCourseId(String $courseId){
+    public function getByCourseId(String $courseId) : ?CourseEntity {
         $conn = $this->getConnection();
         $stmt = $conn->prepare("SELECT * FROM courses WHERE course_id = :courseId ");
         $result = $conn->executePrepared($stmt,[

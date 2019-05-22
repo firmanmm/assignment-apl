@@ -27,7 +27,7 @@ class CourseMaterialService {
      *
      * @param \Domain\Elearning\Entity\CourseEntity $source
      * @param \Domain\Elearning\Entity\CourseEntity $destination
-     * @param CourseEntity
+     * @param int
      * @return void
      */
     public function migrate(CourseEntity $source, CourseEntity $destination, array $materials) : CourseEntity {
@@ -39,11 +39,12 @@ class CourseMaterialService {
         }
 
         foreach($materials as $material) {
-            $newMaterial = $this->materialService->getById($material->getId());
+            $newMaterial = $this->materialService->getById($material);
             if($newMaterial == null) {
-                throw new NotFoundException("Material with id : ".$material->getId());
+                throw new NotFoundException("Material with id : ".$material);
             }
             $newMaterial->setId(0);
+            $newMaterial->setCourse($destination);
             $destination->addMaterial($this->materialService->saveMaterial($newMaterial));
         }
         return $destination;
@@ -53,7 +54,7 @@ class CourseMaterialService {
         if($course->getId() == 0) {
             throw new NotPersistedException("Material title : ".$material->getTitle());
         }
-        $material->setCourseId($course->getId());
+        $material->setCourse($course);
         $course->addMaterial($material);
         $this->materialService->saveMaterial($material);
         return $material;

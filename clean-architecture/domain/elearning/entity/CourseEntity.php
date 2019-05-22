@@ -153,9 +153,10 @@ class CourseEntity extends AbstractEntity{
     public function jsonSerialize()
     {
         $json = parent::jsonSerialize();
-        foreach($this as $key => $value) {
-            $json[$key] = $value;
-        }
+        $json["courseId"] = $this->getCourseId();
+        $json["name"] = $this->getName();
+        $json["description"] = $this->getDescription();
+        $json["capacity"] = $this->getCapacity();
         return $json;
     }
 }

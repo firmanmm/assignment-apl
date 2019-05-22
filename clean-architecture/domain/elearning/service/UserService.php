@@ -34,7 +34,7 @@ class UserService {
      * @param integer $id
      * @return UserEntity
      */
-    public function getUserById(int $id) {
+    public function getUserById(int $id) : UserEntity {
         return $this->repository->getById($id);
     }
 
@@ -44,14 +44,18 @@ class UserService {
      * @param String $studentId
      * @return UserEntity
      */
-    public function getUserByStudentId(String $studentId) {
+    public function getUserByStudentId(String $studentId) : UserEntity {
         if(strlen($studentId) != 14) {
             throw new InvalidFormatException("Student ID's length is ".strlen($studentId)." expected is 14");
         }
         return $this->repository->getByStudentId($studentId);
     }
 
-    public function saveUser(UserEntity $user) {
-        return $this->repository->save($user);
+    public function saveUser(UserEntity $user) : UserEntity {
+        if($user->getId() == 0){
+            return $this->repository->insert($user);
+        }else {
+            return $this->repository->update($user);
+        }
     }
 }

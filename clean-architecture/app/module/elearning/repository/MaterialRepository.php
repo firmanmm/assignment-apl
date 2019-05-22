@@ -4,10 +4,11 @@ namespace App\Elearning\Repository;
 use Domain\Elearning\Repository\MaterialRepositoryInterface;
 use Domain\Elearning\Entity\MaterialEntity;
 use Phalcon\Db\Column;
+use Domain\Elearning\Entity\CourseEntity;
 
 class MaterialRepository extends Repository implements MaterialRepositoryInterface {
 
-    public function getAll(){
+    public function getAll(): array{
         $conn = $this->getConnection();
         $stmt = $conn->prepare("SELECT * FROM materials");
         $result = $conn->executePrepared($stmt,[],[]);
@@ -19,17 +20,16 @@ class MaterialRepository extends Repository implements MaterialRepositoryInterfa
         return $datas;
     }
     
-    private function makeMaterial($rawData) {
-        $material = new MaterialEntity($rawData['id']);
+    private function makeMaterial($rawData): MaterialEntity {
+        $material = new MaterialEntity();
+        $this->populateAbstract($material, $rawData);
         $material->setTitle($rawData['title']);
-        $material->setCourseId($rawData['course_id']);
+        $material->setCourse(new CourseEntity($rawData['course_id']));
         $material->setDescription($rawData['description']);
-        $material->setCreatedAt($rawData['created_at']);
-        $material->setDeletedAt($rawData['deleted_at']);
         return $material;
     }
     
-    public function getById(int $id) {
+    public function getById(int $id): ?MaterialEntity {
         $conn = $this->getConnection();
         $stmt = $conn->prepare("SELECT * FROM materials WHERE id = :id");
         $result = $conn->executePrepared($stmt,[
@@ -41,18 +41,13 @@ class MaterialRepository extends Repository implements MaterialRepositoryInterfa
         return (isset($rawDatas[0])) ? $this->makeMaterial($rawDatas[0]) : null;
     }
 
-    /**
-     * Save current data, may update or insert based on id
-     *
-     * @param MaterialEntity $data
-     * @return MaterialEntity
-     */
-    public function save($data){
+    public function insert(MaterialEntity $data): MaterialEntity
+    {
         $conn = $this->getConnection();
         $stmt = $conn->prepare("INSERT INTO materials(`title`,`course_id`,`description`) VALUES(:title, :courseId, :description)");
         $result = $conn->executePrepared($stmt, [
             'title' => $data->getTitle(),
-            'courseId' => $data->getCourseId(),
+            'courseId' => $data->getCourse()->getId(),
             'description' => $data->getDescription()
         ], [
             'title' => Column::BIND_PARAM_STR,
@@ -60,6 +55,24 @@ class MaterialRepository extends Repository implements MaterialRepositoryInterfa
             'description' => Column::BIND_PARAM_STR
         ]);
         $data->setId($conn->lastInsertId());
+        return $data;
+    }
+
+    public function update(MaterialEntity $data): MaterialEntity
+    {
+        $conn = $this->getConnection();
+        $stmt = $conn->prepare("UPDATE materials SET materials `title`=:title, `course_id`=:courseId, `description`=:description) WHERE id=:id LIMIT 1");
+        $result = $conn->executePrepared($stmt, [
+            'id' => $data->getId(),
+            'title' => $data->getTitle(),
+            'courseId' => $data->getCourseId(),
+            'description' => $data->getDescription()
+        ], [
+            'id' => Column::BIND_PARAM_INT,
+            'title' => Column::BIND_PARAM_STR,
+            'courseId' => Column::BIND_PARAM_INT,
+            'description' => Column::BIND_PARAM_STR
+        ]);
         return $data;
     }
 
@@ -74,7 +87,7 @@ class MaterialRepository extends Repository implements MaterialRepositoryInterfa
         return $result;
     }
 
-    public function getByCourseId($id)
+    public function getByCourseId($id) : array
     {
         $conn = $this->getConnection();
         $stmt = $conn->prepare("SELECT * FROM materials WHERE course_id = :id");

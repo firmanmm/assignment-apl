@@ -16,6 +16,12 @@ use App\Elearning\Repository\CourseRepository;
 use App\Elearning\Repository\MaterialRepository;
 use Domain\Elearning\Service\MaterialService;
 use App\Elearning\Repository\UserCourseRepository;
+use App\Elearning\Repository\EnrollmentRepository;
+use Domain\Elearning\Service\EnrollmentService;
+use Domain\Elearning\Service\QRService;
+use App\Elearning\Provider\QRServiceImpl;
+use Domain\Elearning\Service\CourseMaterialService;
+use Domain\Elearning\Service\CourseEnrollmentService;
 
 $di['config'] = function() use ($config) {
 	return $config;
@@ -61,10 +67,9 @@ $di['materialRepository'] = function() use ($di) {
     return new MaterialRepository($di);
 };
 
-$di['userCourseRepository'] = function() use ($di) {
-    return new UserCourseRepository($di);
+$di['enrollmentRepository'] = function() use ($di) {
+    return new EnrollmentRepository($di);
 };
-
 
 $di['userService'] = function() use ($di) {
     return new UserService($di['userRepository']);
@@ -75,8 +80,29 @@ $di['materialService'] = function() use ($di) {
 };
 
 $di['courseService'] = function() use ($di) {
-    return new CourseService($di['courseRepository'], $di['userCourseRepository'], $di['userService']);
+    return new CourseService($di['courseRepository']);
 };
+
+$di['courseMaterialService'] = function() use ($di) {
+    return new CourseMaterialService($di['courseService'], $di['materialService']);
+};
+
+$di['courseEnrollmentService'] = function() use ($di) {
+    return new CourseEnrollmentService($di['courseService'], $di['enrollmentService']);
+};
+
+$di['enrollmentService'] = function() use ($di) {
+    return new EnrollmentService($di['enrollmentRepository']);
+};
+
+$di['qRImplementation'] = function() use ($di) {
+    return new QRServiceImpl();
+};
+
+$di['qRService'] = function() use ($di) {
+    return new QRService($di["qRImplementation"]);
+};
+
 
 $di['voltService'] = function($view, $di) use ($config) {
     $volt = new \Phalcon\Mvc\View\Engine\Volt($view, $di);

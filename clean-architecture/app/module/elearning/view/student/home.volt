@@ -45,9 +45,9 @@
             </thead>
                 {% for student in students %}
                 <tr>
-                    <td>{{ student.id }}</td>
-                    <td>{{ student.name }}</td>
-                    <td>{{ student.studentId }}</td>
+                    <td>{{ student['id'] }}</td>
+                    <td>{{ student['name'] }}</td>
+                    <td>{{ student['studentId'] }}</td>
                 </tr>
                 {% endfor %}
             <tbody>

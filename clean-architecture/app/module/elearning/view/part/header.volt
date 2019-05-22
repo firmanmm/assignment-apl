@@ -17,6 +17,7 @@
         <li><a href="/student">Student</a></li>
         <li><a href="/course">Course</a></li>
         <li><a href="/material">Material</a></li>
+        <li><a href="/enrollment">Enrollment</a></li>
       </ul>
       <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
     </div>
