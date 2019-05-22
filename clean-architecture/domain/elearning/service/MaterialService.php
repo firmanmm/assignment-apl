@@ -20,6 +20,10 @@ class MaterialService {
         $this->repository = $repository;
     }
 
+    public function getById(int $id) : ?MaterialEntity {
+        return $this->repository->getById($id);
+    }
+
     /**
      * Get all materials
      *

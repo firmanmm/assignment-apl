@@ -19,16 +19,11 @@ class MaterialEntity extends AbstractEntity {
     private $description;
 
     /**
-     * Course Id
+     * Course
      *
-     * @var int
+     * @var CourseEntity
      */
-    private $courseId;
-
-    public function __construct($id)
-    {
-        parent::__construct($id);
-    }
+    private $course;
 
     /**
      * Get material's title
@@ -79,27 +74,25 @@ class MaterialEntity extends AbstractEntity {
     }
 
     /**
-     * Get course Id
+     * Get course
      *
-     * @return  int
+     * @return CourseEntity
      */ 
-    public function getCourseId()
+    public function getCourse() : CourseEntity
     {
-        return $this->courseId;
+        return $this->course;
     }
 
     /**
      * Set course Id
      *
-     * @param  int  $courseId  Course Id
+     * @param  CourseEntity $course
      *
-     * @return  self
+     * @return  void
      */ 
-    public function setCourseId(int $courseId)
+    public function setCourse(CourseEntity $course) : void
     {
-        $this->courseId = $courseId;
-
-        return $this;
+        $this->course = $course;
     }
 
     public function jsonSerialize()

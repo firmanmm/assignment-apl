@@ -3,14 +3,14 @@
 namespace Domain\Elearning\Interactor;
 
 use Domain\Elearning\Service\UserService;
-use Domain\Elearning\Presenter\ListAllUserPresenterInterface;
+use Domain\Elearning\Presenter\UserListPresenter;
 
-class ListAllUser {
+class ListUser {
 
     private $userService;
     private $presenter;
 
-    public function __construct(UserService $userService, ListAllUserPresenterInterface $presenter)
+    public function __construct(UserService $userService, UserListPresenter $presenter)
     {  
         $this->userService = $userService;
         $this->presenter = $presenter;

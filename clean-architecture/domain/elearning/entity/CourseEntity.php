@@ -4,6 +4,7 @@ namespace Domain\Elearning\Entity;
 
 use Exception;
 use JsonSerializable;
+use Domain\Elearning\Exception\CourseFullException;
 
 class CourseEntity extends AbstractEntity{
     /**
@@ -102,11 +103,11 @@ class CourseEntity extends AbstractEntity{
      * Enroll user to this course
      *
      * @param UserEntity $user
-     * 
+     * @return void
      */
-    public function enroll(UserEntity $user) {
+    public function enroll(UserEntity $user) : void {
         if($this->capacity <= count($this->users)){
-            throw new Exception("Course Out Of Capacity");
+            throw new CourseFullException($this);
         }
         $this->users[$user->getId()] = $user;
     }
@@ -147,18 +148,6 @@ class CourseEntity extends AbstractEntity{
     public function getMaterials() : array
     {
         return $this->materials;
-    }
-
-    /**
-     * add available material
-     *
-     * @param  MaterialEntity  $material
-     *
-     * @return  void
-     */ 
-    public function addMaterials(MaterialEntity $material) : void
-    {
-        $this->materials[$material->getId()] = $material;
     }
 
     public function jsonSerialize()

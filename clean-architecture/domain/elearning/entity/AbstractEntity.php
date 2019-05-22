@@ -28,7 +28,7 @@ abstract class AbstractEntity implements \JsonSerializable {
     /**
      * Get the value of id
      */ 
-    public function getId()
+    public function getId() : int
     {
         return $this->id;
     }
@@ -36,13 +36,11 @@ abstract class AbstractEntity implements \JsonSerializable {
     /**
      * Set the value of id
      *
-     * @return  self
+     * @return void
      */ 
-    public function setId($id)
+    public function setId($id) : void
     {
         $this->id = $id;
-
-        return $this;
     }
 
     /**
@@ -50,9 +48,9 @@ abstract class AbstractEntity implements \JsonSerializable {
      *
      * @return  DateTime
      */ 
-    public function getCreatedAt()
+    public function getCreatedAt() : DateTime
     {
-        return $this->createdAt->format(DateTime::ATOM);
+        return $this->createdAt;
     }
 
     /**
@@ -62,19 +60,19 @@ abstract class AbstractEntity implements \JsonSerializable {
      *
      * @return  void
      */ 
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(DateTime $createdAt) : void
     {
-        $this->createdAt = new DateTime($createdAt);
+        $this->createdAt = $createdAt;
     }
 
     /**
      * Get time since this entity is marked for deletion
      *
-     * @return  DateTime
+     * @return DateTime
      */ 
-    public function getDeletedAt()
+    public function getDeletedAt() : DateTime
     {
-        return $this->deletedAt->format(DateTime::ATOM);
+        return $this->deletedAt;
     }
 
     /**
@@ -82,9 +80,9 @@ abstract class AbstractEntity implements \JsonSerializable {
      *
      * @param  String  $deletedAt  Time since this entity is marked for deletion
      *
-     * @return  self
+     * @return  void
      */ 
-    public function setDeletedAt($deletedAt)
+    public function setDeletedAt($deletedAt) : void
     {
         $this->deletedAt = new DateTime($deletedAt);
     }

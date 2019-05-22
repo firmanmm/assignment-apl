@@ -3,6 +3,7 @@
 namespace Domain\Elearning\Entity;
 
 use \Exception;
+use Domain\Elearning\Exception\InvalidFormatException;
 
 class UserEntity extends AbstractEntity{
 
@@ -47,7 +48,7 @@ class UserEntity extends AbstractEntity{
      */
     public function setStudentId(String $studentId) : void {
         if(strlen($studentId) != 14) {
-            throw new Exception("Student id's length is not equal with 14 current length : " . count($studentId));
+            throw new InvalidFormatException("Student id's length is not equal with 14 current length : " . strlen($studentId));
         }
         $this->studentId = $studentId;
     }

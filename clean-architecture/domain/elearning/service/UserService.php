@@ -2,9 +2,9 @@
 
 namespace Domain\Elearning\Service;
 
-use Exception;
 use Domain\Elearning\Entity\UserEntity;
 use Domain\Elearning\Repository\UserRepositoryInterface;
+use Domain\Elearning\Exception\InvalidFormatException;
 
 class UserService {
     /**
@@ -46,7 +46,7 @@ class UserService {
      */
     public function getUserByStudentId(String $studentId) {
         if(strlen($studentId) != 14) {
-            throw new Exception("Invalid student id");
+            throw new InvalidFormatException("Student ID's length is ".strlen($studentId)." expected is 14");
         }
         return $this->repository->getByStudentId($studentId);
     }

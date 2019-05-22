@@ -28,11 +28,11 @@ class CourseEnrollmentService {
     }
 
     /**
-     * Entroll given student id to
+     * Enroll given student id to
      *
      * @param CourseEntity $course
      * @param UserEntity $user
-     * @return CourseEntity
+     * @return EnrollmentEntity
      */
     public function enrollUser(CourseEntity $course, UserEntity $user) : EnrollmentEntity {
         $course->enroll($user);

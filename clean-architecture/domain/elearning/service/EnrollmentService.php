@@ -38,10 +38,10 @@ class EnrollmentService {
      * @return UserEntity[]
      */
     public function getByUser(UserEntity $userEntity) : array {
-        return $this->repository->getEnrollmentsByUser($userEntity);
+        return $this->repository->getEnrollmentsByUserId($userEntity->getId());
     }
 
     public function getByCourse(CourseEntity $courseEntity) : array {
-        return $this->repository->getEnrollmentsByCourse($courseEntity);
+        return $this->repository->getEnrollmentsByCourseId($courseEntity->getId());
     }
 }
